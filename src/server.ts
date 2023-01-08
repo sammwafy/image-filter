@@ -1,7 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import { filterImageFromURL, deleteLocalFiles } from "./util/util";
-
+import { Request, Response} from "express";
 
 (async () => {
   // Init the Express application
@@ -33,12 +33,12 @@ import { filterImageFromURL, deleteLocalFiles } from "./util/util";
     return url.match(/\.(jpeg|jpg|gif|png)$/) != null;
   }
 
-  app.get("/filteredimage", async (req, res) => {
+  app.get("/filteredimage", async (req: Request, res : Response) => {
     let url = req.query.image_url;
     let validUrl = validateLink(url);
 
     if (validUrl) {
-      let imagePath = await filterImageFromURL(url);
+      let imagePath: string = await filterImageFromURL(url);
 
       res.status(200).sendFile(imagePath, function (err) {
         if (err) {
